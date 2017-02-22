@@ -28,7 +28,7 @@ cd fis-vuejs-seed
 fis3 release
 fis3 server start --type node
 
-```
+```gi
 
 #### demo截图
 

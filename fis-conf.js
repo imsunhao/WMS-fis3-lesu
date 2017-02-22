@@ -39,7 +39,7 @@ fis.match("components/page/(*.html)",{
 fis.match('**/*.scss', {
     rExt: '.css', // from .scss to .css
     parser: fis.plugin('node-sass', {
-        //fis-parser-sass option
+        //fis-parser-node-sass option
     })
 });
 
