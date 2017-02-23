@@ -1,4 +1,7 @@
-fis.hook('commonjs', {});
+// 设置项目属性
+fis.set('project.name', 'WMS');
+fis.set('project.static', '/static');
+
 
 fis.match(/static\/(css)\/.*\.*$/, {
     useHash: true
@@ -11,36 +14,26 @@ fis.match(/static\/images\/.*\.(jpeg|jpg|png)$/, {
 
 
 //组件化资源
-fis.match("static/js/(**).js", {
-    isMod: true,
-    moduleId: '$1',
-    useMap: true
+
+
+fis.match("components/**", {
+    release: '${project.static}/lib/$0'
 });
 
-fis.match("components/(**)/css/(**).css", {
-    release: '/static/lib/$1/css/$2'
-});
 
-fis.match("components/(**)/fonts/(**).*", {
-    release: '/static/lib/$1/fonts/$2'
+fis.match('**.es', {
+    parser: fis.plugin('babel-5.x'),
+    rExt: 'js'
 });
 
 fis.match("components/**/(**).js", {
-    isMod: true,
-    moduleId: '$1',
-    useMap: true,
-    release: '/static/lib/$1'
+    release: '${project.static}/lib/$1'
 });
 
 //doc目录不发布
 fis.match("doc/**", {
     release: false
 });
-
-// //node_modules目录不发布
-// fis.match("node_modules/**", {
-//     release: false
-// });
 
 //test目录不发布
 fis.match("test/**", {
@@ -61,11 +54,6 @@ fis.match('**/*.scss', {
 });
 
 fis.match('::packager', {
-    postpackager: fis.plugin('loader', {
-        resourceType: 'mod',
-        useInlineMap: true // 资源映射表内嵌
-    }),
-    packager: fis.plugin('map'),
     spriter: fis.plugin('csssprites', {
         layout: 'matrix',
         margin: '15'
@@ -84,7 +72,7 @@ fis.media('prod')
         optimizer: fis.plugin('uglify-js')
     })
     .match('components/*.js', {
-        packTo: '/static/pkg/common.js'
+        packTo: '${project.static}/pkg/common.js'
     })
     .match('**.css', {
         optimizer: fis.plugin('clean-css')

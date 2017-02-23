@@ -2,24 +2,39 @@
 <html lang="zh-cmn">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="components/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="components/bootstrap/css/bootstrap-theme.css">
-
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="components/element/element.css">
+    <link rel="stylesheet" href="static/css/main.scss">
+    <title>乐速 仓储管理系统 V2.0</title>
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
 <div id="app">
-    <sh-test></sh-test>
+    <div class="header">
+        <el-menu :default-active="headActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-submenu index="2">
+                <template slot="title">我的工作台</template>
+                <el-menu-item index="2-1">选项1</el-menu-item>
+                <el-menu-item index="2-2">选项2</el-menu-item>
+                <el-menu-item index="2-3">选项3</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="3"><a href="javaScript:void(0)" target="_blank">订单管理</a></el-menu-item>
+        </el-menu>
+    </div>
+    <div class="slide">
+        <el-tree
+                :data="slideMenu"
+                accordion
+                @node-click="handleNodeClick">
+        </el-tree>
+    </div>
 </div>
 </body>
 <script src="components/jquery.js"></script>
+<script src="components/vue.js"></script>
 <script src="components/element.js"></script>
-<script src="components/mod.js"></script>
-<script type="text/javascript">
-    require(['static/js/main.js']);
-</script>
+<script src="static/js/main.js"></script>
 </html>
