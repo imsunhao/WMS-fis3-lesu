@@ -42,6 +42,11 @@ fis.match("test/**", {
     release: false
 });
 
+//part目录不发布
+fis.match("static/css/part/**", {
+    release: false
+});
+
 //sass的编译
 fis.match('**/*.scss', {
     rExt: '.css', // from .scss to .css
