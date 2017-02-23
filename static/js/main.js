@@ -1,10 +1,11 @@
-require('jquery');
-require('vue');
+var Vue = require('vue');
 
-Vue.component('SH-test', {
-    template: '<div>Hi new World!</div>'
-});
-
-var app = new Vue({
-    el: "#app"
+$(function () {
+    console.log(Vue);
+    Vue.component('sh-test', {
+        template: '<div>Hi new World!</div>'
+    });
+    var app = new Vue({
+        el: "#app"
+    });
 });

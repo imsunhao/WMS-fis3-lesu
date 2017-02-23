@@ -1,4 +1,3 @@
-fis.hook('module');
 fis.hook('commonjs', {});
 
 fis.match(/static\/(css)\/.*\.*$/, {
@@ -22,7 +21,7 @@ fis.match("components/**/(**).js", {
     isMod: true,
     moduleId: '$1',
     useMap: true,
-    release: '/static/js/$1'
+    release: '/static/lib/$1'
 });
 
 //doc目录不发布

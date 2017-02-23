@@ -2,7 +2,7 @@
     "repos": "https://github.com/vuejs/vue.git",
     "description": "Reactive, component-oriented view layer for modern web interfaces.",
     "name": "vue",
-    "main": "vue.common.js",
+    "main": "vue.js",
     "version": "2.0.5",
     "tag": "master",
     "reposType": "npm",
