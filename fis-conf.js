@@ -37,6 +37,11 @@ fis.match("doc/**", {
     release: false
 });
 
+// //node_modules目录不发布
+// fis.match("node_modules/**", {
+//     release: false
+// });
+
 //test目录不发布
 fis.match("test/**", {
     release: false
