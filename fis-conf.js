@@ -17,6 +17,14 @@ fis.match("static/js/(**).js", {
     useMap: true
 });
 
+fis.match("components/(**)/css/(**).css", {
+    release: '/static/lib/$1/css/$2'
+});
+
+fis.match("components/(**)/fonts/(**).*", {
+    release: '/static/lib/$1/fonts/$2'
+});
+
 fis.match("components/**/(**).js", {
     isMod: true,
     moduleId: '$1',
@@ -60,6 +68,9 @@ fis.media('prod')
         useHash: false
     })
     .match('**.js', {
+        parser: fis.plugin('jdists', {
+            remove: "debug,test"
+        }),
         optimizer: fis.plugin('uglify-js')
     })
     .match('components/*.js', {
