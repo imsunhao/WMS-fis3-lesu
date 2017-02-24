@@ -1,49 +1,32 @@
 // 设置项目属性
-fis.set('project.name', 'WMS');
 fis.set('project.static', '/static');
-
 
 fis.match(/static\/(css)\/.*\.*$/, {
     useHash: true
 });
 
-//文章封面和作者头像等动态图片地址不加hash
-fis.match(/static\/images\/.*\.(jpeg|jpg|png)$/, {
-    useHash: false
-});
-
-
-//组件化资源
-
-
-fis.match("components/**", {
-    release: '${project.static}/lib/$0'
-});
-
-
-fis.match('**.es', {
-    parser: fis.plugin('babel-5.x'),
-    rExt: 'js'
-});
-
-fis.match("components/**/(**).js", {
-    release: '${project.static}/lib/$1'
-});
-
-//doc目录不发布
-fis.match("doc/**", {
+//doc目录,test目录不发布
+fis.match("{doc,test}/**", {
     release: false
 });
 
-//test目录不发布
-fis.match("test/**", {
-    release: false
-});
-
-//part目录不发布
+//sass part目录不发布
 fis.match("static/css/part/**", {
     release: false
 });
+
+//调整 main.html
+fis.match('static/(main.html)', {
+    release: "/$1",
+    useCache: false
+});
+
+//调整 login.html
+fis.match("static/page/login/(*.html)", {
+    release: '/$1',
+    useCache: false
+});
+
 
 //sass的编译
 fis.match('**/*.scss', {
@@ -60,20 +43,53 @@ fis.match('::packager', {
     })
 });
 
-//生产环境下CSS、JS压缩合并
-fis.media('prod')
+//删除 生产实际代码
+
+fis.media('debug')
+    .match('components/prod/*.js', {
+        release:false
+    })
+    .match('static/**(.{html,js})', {
+        parser: fis.plugin('jdists', {
+            remove: "prod"
+        })
+    });
+
+//模拟生产环境下CSS、JS压缩合并
+fis.media('test')
     .match(/static\/(css|js)\/.*\.*$/, {
         useHash: false
     })
-    .match('**.js', {
+    .match('**.html', {
         parser: fis.plugin('jdists', {
-            remove: "debug,test"
+            remove: "todoList,debug"
+        })
+    })
+    .match('static/**(.{html,js})', {
+        parser: fis.plugin('jdists', {
+            remove: "todoList,debug"
         }),
         optimizer: fis.plugin('uglify-js')
     })
-    .match('components/*.js', {
-        packTo: '${project.static}/pkg/common.js'
+    .match(/(components\/.*\/*css|static\/css\/main.scss)/, {
+        packTo: '${project.static}/lib/common.css',
+        optimizer: fis.plugin('clean-css')
+    })
+    .match("components/*/fonts/(**)", {
+        release: "${project.static}/lib/fonts/$1"
+    })
+    .match('components/prod/*.js', {
+        packTo: '${project.static}/lib/common.js'
+    })
+    .match('components/debug/*.js', {
+        release:false
     })
     .match('**.css', {
         optimizer: fis.plugin('clean-css')
+    });
+
+//生产环境下
+fis.media('prod')
+    .match('hock/**', {
+        release: false
     });

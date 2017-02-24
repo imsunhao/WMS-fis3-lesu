@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="components/element/element.css">
-    <link rel="stylesheet" href="static/css/main.scss">
+
+    <!--debug-->
+    <link rel="stylesheet" href="../components/element/element.css">
+    <link rel="stylesheet" href="css/main.scss">
+    <!--/debug-->
+    <!--prod-->
+    <link rel="stylesheet" href="/static/lib/common.css">
+    <script src="/static/lib/common.js"></script>
+    <!--/prod-->
     <title>乐速 仓储管理系统 V2.0</title>
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!--debug-->
+    <script src="../components/debug/jquery.js"></script>
+    <script src="../components/debug/vue.js"></script>
+    <script src="../components/debug/element.js"></script>
+    <!--/debug-->
+    <script src="js/main.js"></script>
 </head>
 <body>
-<div id="app">
+<div id="app" v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="拼命加载中">
     <div class="header">
         <el-menu :default-active="headActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">处理中心</el-menu-item>
@@ -25,16 +38,18 @@
         </el-menu>
     </div>
     <div class="slide">
+        <el-input
+                placeholder="输入关键字进行过滤"
+                v-model="f_SlideMenuText">
+        </el-input>
         <el-tree
                 :data="slideMenu"
                 accordion
+                :filter-node-method="filterNode"
+                ref="slideTree"
                 @node-click="handleNodeClick">
         </el-tree>
     </div>
 </div>
 </body>
-<script src="components/jquery.js"></script>
-<script src="components/vue.js"></script>
-<script src="components/element.js"></script>
-<script src="static/js/main.js"></script>
 </html>
