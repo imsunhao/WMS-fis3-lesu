@@ -9,7 +9,8 @@ $(function () {
         data: function () {
             return {
                 nav:[],                         //Nav-DB
-                headActiveIndex: 0,             //nav-header
+                navControl:0,                   //Nav-control
+                headMenu: [],                    //nav-header
                 slideMenu: {},                  //Nav-slide
                 f_SlideMenuText: '',            //Nav-slide-search
 
@@ -24,10 +25,7 @@ $(function () {
         methods: {
             //TODO 完善 控制方法
             handleSelect: function (key, keyPath) {
-                console.log(key, keyPath);
-            },
-            handleNodeClick: function (data) {
-                console.log(data);
+                // this.$data.slideMenu=this.$data.nav[this.$data.navControl].children;
             },
             filterNode: function (value, data) {
                 if (!value) return true;
@@ -54,6 +52,8 @@ $(function () {
             }
         }
 
+        // $.ajax(hock + '/Auth/userInfo-AuthFile.json', {
+        // $.ajax(hock + '/Auth/userInfo-timeOut.json', {
         $.ajax(hock + '/Auth/userInfo.json', {
             type: "GET",
             data: {},
@@ -84,7 +84,6 @@ $(function () {
                             app.$data.user.userAuthID = json.user.userAuthID;
                         })();
 
-
                         //加载nav
                         $.ajax(hock + '/main/Nav-DB.json', {
                             type: "GET",
@@ -94,16 +93,28 @@ $(function () {
                             success: function (json) {
                                 app.$data.nav = json.data;
                                 //TODO 解析NAV
-
                                 //加载header-Nav
+                                (function () {
+                                    var temp=[];
+                                    for(var i=0;i<app.$data.nav.length;i++)
+                                        temp.push(app.$data.nav[i].head);
+                                    app.$data.headMenu=temp;
+                                })();
 
                                 //加载slider-Menu
-
+                                analysisSliderNav(app);
                             },
                             complete: function () {
                                 Loading();
                             }
                         });
+
+
+                        //工具函数
+                        function analysisSliderNav(app) {
+                            app.$data.slideMenu=app.$data.nav[app.$data.navControl].children;
+                        }
+
 
                         /*<debug>*/
                         //初始化程序结束，输出提示
