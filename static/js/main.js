@@ -1,16 +1,23 @@
 /*<prod>*/
 console.log('线上版本');
 /*</prod>*/
+/*<debug>*/
+var app;
+var hock = "../../hock";
+/*</debug>*/
 $(function () {
+    /*<prod>*/
     var hock = "../../hock";
-    var app = new Vue({
+    var app;
+    /*</prod>*/
+    app = new Vue({
         el: '#app',
         prop: {},
         data: function () {
             return {
                 nav:[],                         //Nav-DB
                 navControl:0,                   //Nav-control
-                headMenu: [],                    //nav-header
+                headMenu: [],                   //nav-header
                 slideMenu: {},                  //Nav-slide
                 f_SlideMenuText: '',            //Nav-slide-search
 
@@ -19,15 +26,28 @@ $(function () {
                 user: {                         //User信息
                     username: "",
                     userAuthID: ""
-                }
+                },
+                breadcrumb:['首页']                   //面包屑菜单
+
             };
         },
         methods: {
             //TODO 完善 控制方法
-            handleSelect: function (key, keyPath) {
-                // this.$data.slideMenu=this.$data.nav[this.$data.navControl].children;
+            handleSelect: function (key, keyPath) { //nav-head 点击事件
+                this.$data.slideMenu=this.$data.nav[key].children;
+                this.$data.f_SlideMenuText='';
+                this.breadcrumb=[];
+                this.breadcrumb.push(this.$data.nav[key].head);
             },
-            filterNode: function (value, data) {
+            userSelect:function () {                //nav-head 用户点击事件
+                console.log('userSelect!');
+            },
+            handleNodeClick: function (data) {      //nav-slider 点击事件
+                console.log(this.breadcrumb);
+                if(this.breadcrumb.length==2) this.breadcrumb.pop();
+                this.breadcrumb.push(data.label);
+            },
+            filterNode: function (value, data) {    //nav-slider 过滤文字
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
             }
@@ -35,7 +55,9 @@ $(function () {
         watch: {
             f_SlideMenuText: function (val) {
                 this.$refs.slideTree.filter(val);
-            }
+            },
+            slideMenu:function () {},
+            breadcrumb:function () {}
         }
     });
 
@@ -75,7 +97,7 @@ $(function () {
                     (function (app) {
                         //维护 Loading 层
                         complie = 0;    //刷新统计页面是否全部完成
-                        end = 1;
+                        end += 1;
                         app.$data.fullscreenLoading = true; //显示加载
 
                         //填充用户信息
@@ -114,7 +136,6 @@ $(function () {
                         function analysisSliderNav(app) {
                             app.$data.slideMenu=app.$data.nav[app.$data.navControl].children;
                         }
-
 
                         /*<debug>*/
                         //初始化程序结束，输出提示

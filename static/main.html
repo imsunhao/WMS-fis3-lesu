@@ -32,11 +32,17 @@
                 <span>乐速仓库管理系统</span>
             </div>
         </div>
-        <!--TODO 完成联动控制-->
-        <el-menu class="headerNav" mode="horizontal" @select="handleSelect" :default-active="navControl">
-            <!--<el-menu-item :index="index" v-for="(item, index) in headMenu">{{item}}</el-menu-item>-->
+        <el-menu class="headerNav" mode="horizontal" @select="handleSelect" default-active="0">
+            <el-menu-item v-bind:index="index" v-for="(item, index) in headMenu">{{item}}</el-menu-item>
         </el-menu>
-
+        <el-menu class="user" mode="horizontal" @select="userSelect" default-active="0">
+            <el-menu-item index="0">处理中心</el-menu-item>
+            <el-submenu index="2" >
+                <template slot="title" :user="user">{{user.username}}</template>
+                <el-menu-item index="2-1">修改信息</el-menu-item>
+                <el-menu-item index="2-2">退出登录</el-menu-item>
+            </el-submenu>
+        </el-menu>
     </div>
     <div class="slide">
         <el-input
@@ -48,8 +54,14 @@
                 accordion
                 :filter-node-method="filterNode"
                 ref="slideTree"
+                highlight-current
                 @node-click="handleNodeClick">
         </el-tree>
+    </div>
+    <div class="content">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="(item, index) in breadcrumb">{{item}}</el-breadcrumb-item>
+        </el-breadcrumb>
     </div>
 </div>
 </body>
