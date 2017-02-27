@@ -15,36 +15,35 @@ $(function () {
         prop: {},
         data: function () {
             return {
-                nav:[],                         //Nav-DB
-                navControl:0,                   //Nav-control
-                headMenu: [],                   //nav-header
-                slideMenu: {},                  //Nav-slide
-                f_SlideMenuText: '',            //Nav-slide-search
+                nav: [],                            //Nav-DB
+                navControl: 0,                      //Nav-control
+                headMenu: [],                       //nav-header
+                slideMenu: {},                      //Nav-slide
+                f_SlideMenuText: '',                //Nav-slide-search
 
-                fullscreenLoading: false,       //全局加载控制
+                fullscreenLoading: false,           //全局加载控制
 
-                user: {                         //User信息
+                user: {
                     username: "",
                     userAuthID: ""
-                },
-                breadcrumb:['首页']                   //面包屑菜单
-
+                },                                   //User信息
+                breadcrumb: ['首页']                 //面包屑菜单
             };
         },
         methods: {
             //TODO 完善 控制方法
             handleSelect: function (key, keyPath) { //nav-head 点击事件
-                this.$data.slideMenu=this.$data.nav[key].children;
-                this.$data.f_SlideMenuText='';
-                this.breadcrumb=[];
+                this.$data.slideMenu = this.$data.nav[key].children;
+                this.$data.f_SlideMenuText = '';
+                this.breadcrumb = [];
                 this.breadcrumb.push(this.$data.nav[key].head);
             },
-            userSelect:function () {                //nav-head 用户点击事件
+            userSelect: function () {                //nav-head 用户点击事件
                 console.log('userSelect!');
             },
             handleNodeClick: function (data) {      //nav-slider 点击事件
                 console.log(this.breadcrumb);
-                if(this.breadcrumb.length==2) this.breadcrumb.pop();
+                if (this.breadcrumb.length == 2) this.breadcrumb.pop();
                 this.breadcrumb.push(data.label);
             },
             filterNode: function (value, data) {    //nav-slider 过滤文字
@@ -56,8 +55,10 @@ $(function () {
             f_SlideMenuText: function (val) {
                 this.$refs.slideTree.filter(val);
             },
-            slideMenu:function () {},
-            breadcrumb:function () {}
+            slideMenu: function () {
+            },
+            breadcrumb: function () {
+            }
         }
     });
 
@@ -117,10 +118,10 @@ $(function () {
                                 //TODO 解析NAV
                                 //加载header-Nav
                                 (function () {
-                                    var temp=[];
-                                    for(var i=0;i<app.$data.nav.length;i++)
+                                    var temp = [];
+                                    for (var i = 0; i < app.$data.nav.length; i++)
                                         temp.push(app.$data.nav[i].head);
-                                    app.$data.headMenu=temp;
+                                    app.$data.headMenu = temp;
                                 })();
 
                                 //加载slider-Menu
@@ -132,10 +133,19 @@ $(function () {
                         });
 
 
+                        //加载 首页 content
+                        $("#showing").load("/static/page/inputSelect/inputSelect.html", function() {
+                            /*<debug>*/
+                            console.log("Load was performed.");
+                            /*</debug>*/
+                        });
+
+
                         //工具函数
                         function analysisSliderNav(app) {
-                            app.$data.slideMenu=app.$data.nav[app.$data.navControl].children;
+                            app.$data.slideMenu = app.$data.nav[app.$data.navControl].children;
                         }
+
 
                         /*<debug>*/
                         //初始化程序结束，输出提示
