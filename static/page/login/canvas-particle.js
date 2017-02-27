@@ -430,5 +430,4 @@ window.onload = function () {
             //在这里写Ajax提交
         }
     }
-
 };
