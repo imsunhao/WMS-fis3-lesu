@@ -31,7 +31,6 @@ $(function () {
             };
         },
         methods: {
-            //TODO 完善 控制方法
             handleSelect: function (key, keyPath) { //nav-head 点击事件
                 this.$data.slideMenu = this.$data.nav[key].children;
                 this.$data.f_SlideMenuText = '';
@@ -115,7 +114,6 @@ $(function () {
                             },
                             success: function (json) {
                                 app.$data.nav = json.data;
-                                //TODO 解析NAV
                                 //加载header-Nav
                                 (function () {
                                     var temp = [];
@@ -133,7 +131,7 @@ $(function () {
                         });
 
 
-                        //加载 首页 content
+                        //加载 首页
                         $("#showing").load("/static/page/inputSelect/inputSelect.html", function() {
                             /*<debug>*/
                             console.log("Load was performed.");
