@@ -12,3 +12,6 @@ npm-debug.log
 /output
 /DOC
 /UI
+
+public/
+views/

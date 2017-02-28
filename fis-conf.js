@@ -1,31 +1,21 @@
 // 设置项目属性
 fis.set('project.static', '/static');
 
+//doc目录,test目录不发布
+fis.set('project.ignore', [
+    'doc/**',
+    'node_modules/**',
+    '.git/**',
+    '.idea/**',
+    'test/**',
+    'server/**',
+    'fis-conf.js'
+]);
+
 fis.match(/static\/(css)\/.*\.*$/, {
     useHash: true
 });
 
-//doc目录,test目录不发布
-fis.match("{doc,test}/**", {
-    release: false
-});
-
-//sass part目录不发布
-fis.match("static/css/part/**", {
-    release: false
-});
-
-//调整 main.html
-fis.match('static/(main.html)', {
-    release: "/$1",
-    useCache: false
-});
-
-//调整 login.html
-fis.match("static/page/login/(*.html)", {
-    release: '/$1',
-    useCache: false
-});
 
 
 //sass的编译
@@ -46,8 +36,18 @@ fis.match('::packager', {
 //删除 生产实际代码
 
 fis.media('debug')
+    //调整 main.html
+    .match('static/(main.html)', {
+        release: "/$1",
+        useCache: false
+    })
+    //调整 login.html
+    .match("static/page/login/(*.html)", {
+        release: '/$1',
+        useCache: false
+    })
     .match('components/prod/*.js', {
-        release:false
+        release: false
     })
     .match('static/**(.{html,js})', {
         parser: fis.plugin('jdists', {
@@ -57,6 +57,16 @@ fis.media('debug')
 
 //模拟生产环境下CSS、JS压缩合并
 fis.media('test')
+    .set('project.ignore', [
+        'doc/**',
+        'node_modules/**',
+        '.git/**',
+        '.idea/**',
+        'test/**',
+        'server/**',
+        'fis-conf.js',
+        'static/**.html'
+    ])
     .match(/static\/(css|js)\/.*\.*$/, {
         useHash: false
     })
@@ -65,11 +75,21 @@ fis.media('test')
             remove: "todoList,debug"
         })
     })
-    .match('static/**(.{html,js})', {
+    .match('static/**.js', {
         parser: fis.plugin('jdists', {
             remove: "todoList,debug"
         }),
         optimizer: fis.plugin('uglify-js')
+    })
+    .match("static/page/(**.html)", {                                 //修改 html文件 为ejs
+        release: '../views/$1',
+        rExt: '.ejs',
+        useCache: false
+    })
+    .match("static/page/login/index.html", {                        //修改登录 释放位置
+        release: '../views/login',
+        rExt: '.ejs',
+        useCache: false
     })
     .match(/(components\/.*\/*css|static\/css\/main.scss)/, {
         packTo: '${project.static}/lib/common.css',
@@ -82,7 +102,7 @@ fis.media('test')
         packTo: '${project.static}/lib/common.js'
     })
     .match('components/debug/*.js', {
-        release:false
+        release: false
     })
     .match('**.css', {
         optimizer: fis.plugin('clean-css')

@@ -14,46 +14,6 @@
     <!--<div id="main5" v-echarts="a6" style="width: 600px;height:400px;"></div>-->
 </div>
 <script>
-
-//    Vue.component('echarts', {
-//        // 选项
-//        props:['option'],
-//        template:'<div class="eCharts"></div>',
-//        methods:{
-//
-//        },
-//        watch:{
-//            option:function () {
-//                var _this = this;
-//
-//                Vue.nextTick(function () {
-//                    // init echarts instance
-//                    _this.instance = echarts.init(_this.$el);
-//
-//                    // show loading animation
-//                     if (_this.params.loading === true) {
-//                         _this.instance.showLoading();
-//                     }
-//
-//                    // auto resize
-////                     var resizeEvent = new Event('resize');  ie9,10 no work
-//
-//                     _this.resizeEventHandler = function () {
-//                         _this.instance.resize();
-//                     };
-//
-//                     _this.el.addEventListener('resize', _this.resizeEventHandler, false);
-//
-//                     if(window.attachEvent){
-//                         window.attachEvent('onresize',_this.resizeEventHandler);
-//                     }else{
-//                         window.addEventListener('resize', _this.resizeEventHandler, false);
-//                     }
-//                });
-//            }
-//        }
-//    });
-
     /*<debug>*/
     var home=
     /*</debug>*/
@@ -350,14 +310,15 @@
         },
         methods:{
             changeA1:function () {
-                var input=parseFloat((Math.random() * 500).toFixed(2));
-                var output=parseFloat((Math.random() * -500).toFixed(2));
+                var input=parseInt((Math.random() * 160 + 40).toFixed(2));
+                var output=parseInt((Math.random() * -160 - 40).toFixed(2));
+                this.a1.yAxis[0].data.push(this.a1.yAxis[0].data.shift());
                 this.a1.series[0].data.shift();
                 this.a1.series[1].data.shift();
                 this.a1.series[2].data.shift();
                 this.a1.series[1].data.push(input);
                 this.a1.series[2].data.push(output);
-                this.a1.series[0].data.push(parseFloat((input+output).toFixed(2)));
+                this.a1.series[0].data.push(parseInt((input+output).toFixed(2)));
                 document.getElementById('a1').instance.setOption(this.a1);
             }
         }
