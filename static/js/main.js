@@ -10,6 +10,22 @@ $(function () {
     var hock = "../../hock";
     var app;
     /*</prod>*/
+    Vue.directive('echarts',{
+        bind: function (el,binding,vnode) {
+            Vue.nextTick(function () {
+                var el=vnode.context.$el.children[binding.arg];
+                el.instance = echarts.init(el);
+                el.instance.setOption(binding.value);
+            });
+        },
+        update: function (val, oldVal) {
+            console.log('update');
+
+        },
+        unbind: function () {
+            console.log('unbind');
+        }
+    });
     app = new Vue({
         el: '#app',
         prop: {},
@@ -132,7 +148,8 @@ $(function () {
 
 
                         //加载 首页
-                        $("#showing").load("/static/page/inputSelect/inputSelect.html", function() {
+                        // $("#showing").load("/static/page/inputSelect/inputSelect.html", function() {     //加载 入库查询
+                        $("#showing").load("/static/page/home/home.html", function() {        //加载 首页
                             /*<debug>*/
                             console.log("Load was performed.");
                             /*</debug>*/
