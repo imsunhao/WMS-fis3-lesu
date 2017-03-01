@@ -1,4 +1,5 @@
-/.idea
+.idea/
+
 *.swp
 .DS_Store
 ._*
@@ -8,10 +9,13 @@
 node_modules
 npm-debug.log
 
-/temp
-/output
-/DOC
-/UI
+temp/
+output/
+DOC/
+UI/
 
-public/
-views/
+log/
+
+server/public/
+server/views/
+server/serverConfig/

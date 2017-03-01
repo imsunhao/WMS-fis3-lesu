@@ -1,3 +1,8 @@
+/*<prod>*/
+console.log('线上版本');
+/*</prod>*/
+
+//---------------------------背景绘制------------------------------
 var CanvasParticle = (function () {
     function getElementByTag(name) {
         return document.getElementsByTagName(name);
@@ -170,6 +175,7 @@ var CanvasParticle = (function () {
     return canvasInit;
 })();
 
+//---------------------------验证控制层----------------------------
 (function (win, undefined) {
 
     var regItem = {
@@ -345,7 +351,10 @@ var CanvasParticle = (function () {
 
 }(window));
 
+
+//---------------------------初始化程序----------------------------
 window.onload = function () {
+
     var config = {
         vx: 4,
         vy: 4,
@@ -386,18 +395,19 @@ window.onload = function () {
 
     //--------
     var ooo = new Mvalidate('myForm');
-    ooo.add({
-        name: 'username',
-        rules: ['required', /[a-zA-Z0-9_]+$/, 'maxLength(16)'],
-        message: ['用户名必须填写', '用户名必须为英文与数字或者下划线', '用户名最长不能超过16位'],
-        callback: function (el, errorEl) {
+    ooo
+        .add({
+            name: 'username',
+            rules: ['required', /[a-zA-Z0-9_]+$/, 'maxLength(16)'],
+            message: ['用户名必须填写', '用户名必须为英文与数字或者下划线', '用户名最长不能超过16位'],
+            callback: function (el, errorEl) {
 
-        }
-    })
+            }
+        })
         .add({
             name: 'password',
             rules: ['required', 'minLength(6)'],
-            message: ['密码必须填', '密码太短'],
+            message: ['密码必须填', '密码不足6位'],
             callback: function (el, errorEl) {
 
             }
@@ -425,9 +435,25 @@ window.onload = function () {
 
     document.getElementById('myForm').onsubmit = function (e) {
         e.preventDefault();
+
+        /*<debug>*/
         console.log(ooo.valid());
+        /*</debug>*/
+
         if (ooo.valid()) {
-            //在这里写Ajax提交
+            /*<debug>*/
+            window.location.href = '/main.html';
+            /*</debug>*/
+
+            /*<prod>*/
+            $.post('/users/login', {
+                username: $('#username').val(),
+                password: $('#password').val()
+            }, function (json) {
+                window.location.href = json.url;
+            });
+            /*</prod>*/
         }
     }
 };
+

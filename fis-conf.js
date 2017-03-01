@@ -1,14 +1,16 @@
 // 设置项目属性
 fis.set('project.static', '/static');
 
-//doc目录,test目录不发布
+// 目录不发布
 fis.set('project.ignore', [
-    'doc/**',
+    'DOC/**',
+    'UL/**',
     'node_modules/**',
     '.git/**',
     '.idea/**',
     'test/**',
     'server/**',
+    'output/**',
     'fis-conf.js'
 ]);
 
@@ -33,7 +35,7 @@ fis.match('::packager', {
     })
 });
 
-//删除 生产实际代码
+//-------------------------删除 生产实际代码--------------------------------
 
 fis.media('debug')
     //调整 main.html
@@ -55,17 +57,19 @@ fis.media('debug')
         })
     });
 
-//模拟生产环境下CSS、JS压缩合并
+//-----------------------模拟生产环境下CSS、JS压缩合并-----------------------
 fis.media('test')
     .set('project.ignore', [
-        'doc/**',
+        'DOC/**',
+        'UL/**',
+        'hock/**',
         'node_modules/**',
         '.git/**',
         '.idea/**',
         'test/**',
         'server/**',
-        'fis-conf.js',
-        'static/**.html'
+        'output/**',
+        'fis-conf.js'
     ])
     .match(/static\/(css|js)\/.*\.*$/, {
         useHash: false
@@ -81,14 +85,16 @@ fis.media('test')
         }),
         optimizer: fis.plugin('uglify-js')
     })
-    .match("static/page/(**.html)", {                                 //修改 html文件 为ejs
+    .match("static/page/(**.html)", {                                    //修改 html文件 为ejs
         release: '../views/$1',
-        rExt: '.ejs',
         useCache: false
     })
-    .match("static/page/login/index.html", {                        //修改登录 释放位置
-        release: '../views/login',
-        rExt: '.ejs',
+    .match("static/page/login/index.html", {                             //修改登录 释放位置
+        release: '../views/login.html',
+        useCache: false
+    })
+    .match("static/main.html", {                                         //修改main 释放位置
+        release: '../views/index.html',
         useCache: false
     })
     .match(/(components\/.*\/*css|static\/css\/main.scss)/, {
